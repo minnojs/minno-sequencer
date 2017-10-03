@@ -1,0 +1,26 @@
+{
+  "name": "sequencer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-requirejs": "^1.1.0"
+  },
+  "devDependencies": {
+    "karma-phantomjs-launcher": "^1.0.4",
+    "requirejs": "^2.3.5"
+  },
+  "scripts": {
+    "test": "karma start",
+    "vendor": "mkdir -p vendor && cp node_modules/angular/angular.js vendor && cp node_modules/angular-mocks/angular-mocks.js vendor && cp node_modules/lodash-compat/index.js vendor/lodash.js"
+  },
+  "author": "",
+  "license": "Apache-2.0"
+}
