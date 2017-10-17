@@ -1,5 +1,6 @@
 define(function(require){
     var _ = require('underscore');
+    var global = this.piGlobal;
 
     var mixerSequence = require('./mixer/main');
     var templateObj = require('./template/main');
@@ -7,38 +8,38 @@ define(function(require){
     var collection = require('./collection/collectionProvider')();
 
     var DatabaseRandomizer = require('./randomizer/randomizerProvider')(
-		randomInt,// randomize int
-		randomArr,// randomize range
-		collection
-	);
+        randomInt,// randomize int
+        randomArr,// randomize range
+        collection
+    );
 
     var databaseQuery = require('./queryProvider')(
-		collection,
-		piConsole
-	);
+        collection,
+        piConsole
+    );
 
     var databaseInflate = require('./inflateProvider')(
-		databaseQuery,
-		{global:window.piGlobal}, // rootscope
-		piConsole
-	);
+        databaseQuery,
+        {global: global}, // rootscope
+        piConsole
+    );
 
     var DatabaseStore = require('./store/storeProvider')(
-		collection
-	);
+        collection
+    );
 
     var databaseSequence = require('./databaseSequenceProvider')(
-		mixerSequence
-	);
+        mixerSequence
+    );
 
 
     var Database = require('./databaseProvider')(
-		DatabaseStore,
-		DatabaseRandomizer,
-		databaseInflate,
-		templateObj,
-		databaseSequence
-	);
+        DatabaseStore,
+        DatabaseRandomizer,
+        databaseInflate,
+        templateObj,
+        databaseSequence
+    );
 
     return Database;
 

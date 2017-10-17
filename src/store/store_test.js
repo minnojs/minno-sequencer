@@ -15,7 +15,7 @@ define(['../databaseModule'],function(){
         });
 
         it('should support creating a collection', inject(function(Collection){
-			// create instiates an empty array
+            // create instiates an empty array
             store.create('nameSpace');
             expect(store.store.nameSpace).toEqual(jasmine.any(Collection));
             expect(store.store.nameSpace.length).toBe(0);

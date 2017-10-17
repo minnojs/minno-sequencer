@@ -12,8 +12,8 @@
 define(function(require){
     var _ = require('underscore');
 
-    inflateProvider.$inject = ['databaseQuery','$rootScope','piConsole'];
-    function inflateProvider(query, $rootScope, $console){
+    inflateProvider.$inject = ['databaseQuery','$rootScope'];
+    function inflateProvider(query, $rootScope){
 
         function customize(source){
             // check for a custom function and run it if it exists
@@ -32,47 +32,30 @@ define(function(require){
             // ***********************************
             depth = recursive ? --depth : 10;
 
-            if (!depth) {
-                throw new Error('Inheritance loop too deep, you can only inherit up to 10 levels down');
-            }
+            if (!depth) throw new Error('Inheritance loop too deep, you can only inherit up to 10 levels down');
 
-            if (!_.isPlainObject(source)){
-                /* eslint-disable no-console */
-                console.error('You are trying to inflate a non object', source);
-                /* eslint-enable no-console */
-                throw new Error('You are trying to inflate a non object');
-            }
+            if (!_.isPlainObject(source)) throw new Error('You are trying to inflate a non object (' + JSON.stringify(source) + ')');
 
-            var parent
-            // create child
-                , child = _.cloneDeep(source)
-                , err
-                , inheritObj = child.inherit;
-
+            var parent;
+            var child = _.cloneDeep(source);
+            var inheritObj = child.inherit;
 
             /*
              * no inheritance
              */
 
-            // if we do not need to inherit anything, simply return source
             if (!child.inherit) {
-                // customize only on the last call (non recursive)
-                !recursive && customize(child);
+                if (!recursive) customize(child); // customize only on the last call (non recursive)
                 return child;
             }
 
             /*
              * get parent
              */
-
             parent = query(inheritObj, coll, randomizer);
 
             // if inherit target was not found
-            if (!parent){
-                err = new Error('Query failed, object (' + JSON.stringify(inheritObj) +	') not found.');
-                $console('query').error(err);
-                throw err;
-            }
+            if (!parent) throw new Error('Query failed, object (' + JSON.stringify(inheritObj) +	') not found.');
 
             // inflate parent (recursively)
             parent = inflate(

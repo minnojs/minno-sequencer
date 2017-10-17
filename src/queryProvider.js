@@ -1,55 +1,42 @@
 define(['underscore'],function(_){
 
-    queryProvider.$inject = ['Collection','piConsole'];
-    function queryProvider(Collection, $console){
+    queryProvider.$inject = ['Collection'];
+    function queryProvider(Collection){
 
         function queryFn(query, collection, randomizer){
             var coll = new Collection(collection);
 
-			// shortcuts:
-			// ****************************
+            // shortcuts:
+            // ****************************
 
-			// use function instead of query object.
-            if (_.isFunction(query)){
-                return query(collection);
-            }
+            if (_.isFunction(query)) return query(collection);
 
-			// pure string query
-            if (_.isString(query) || _.isNumber(query)){
-                query = {set:query, type:'random'};
-            }
+            if (_.isString(query) || _.isNumber(query)) query = {set:query, type:'random'};
 
-			// narrow down by set
-			// ****************************
-            if (query.set){
-                coll = coll.where({set:query.set});
-            }
+            // filter by set
+            // ****************************
+            if (query.set) coll = coll.where({set:query.set});
 
-			// narrow down by data
-			// ****************************
+            // filter by data
+            // ****************************
             if (_.isString(query.data)){
                 coll = coll.filter(function(q){
                     return q.handle === query.data || (q.data && q.data.handle === query.data);
                 });
             }
 
-            if (_.isPlainObject(query.data)){
-                coll = coll.where({data:query.data});
-            }
+            if (_.isPlainObject(query.data)) coll = coll.where({data:query.data});
 
-            if (_.isFunction(query.data)){
-                coll = coll.filter(query.data);
-            }
+            if (_.isFunction(query.data)) coll = coll.filter(query.data);
 
-			// pick by type
-			// ****************************
+            // pick by type
+            // ****************************
 
-			// the default seed is namespace specific just to minimize the situations where seeds clash across namespaces
+            // the default seed is namespace specific just to minimize the situations where seeds clash across namespaces
             var seed = query.seed || ('$' + collection.namespace + query.set);
             var length = coll.length;
             var repeat = query.repeat;
             var at;
-            var err;
 
             switch (query.type){
                 case undefined:
@@ -73,11 +60,7 @@ define(['underscore'],function(_){
                     throw new Error('Unknow query type: ' + query.type);
             }
 
-            if (_.isUndefined(coll.at(at))) {
-                err = new Error('Query failed, object (' + JSON.stringify(query) +	') not found. If you are trying to apply a template, you should know that they are not supported for inheritance.');
-                $console('query').error(err);
-                throw err;
-            }
+            if (_.isUndefined(coll.at(at))) throw new Error('Query failed, object (' + JSON.stringify(query) +	') not found. If you are trying to apply a template, you should know that they are not supported for inheritance.');
 
             return coll.at(at);
         }

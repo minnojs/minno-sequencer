@@ -12,17 +12,17 @@ define(function(require){
             }
 
             mixed = _(sequence)
-				.map(function(obj){
+                .map(function(obj){
 
-    if (_.isUndefined(obj.mixer)){
-        return obj;
-    }
+                    if (_.isUndefined(obj.mixer)){
+                        return obj;
+                    }
 
-					// mix object, and recursively mix the result
-    return mixerRecursive(mix(obj, context), context, depth);
-})
-				.flatten()
-				.value();
+                    // mix object, and recursively mix the result
+                    return mixerRecursive(mix(obj, context), context, depth);
+                })
+                .flatten()
+                .value();
 
             return mixed;
         }

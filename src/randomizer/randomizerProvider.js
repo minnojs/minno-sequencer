@@ -1,6 +1,7 @@
-define(['underscore'],function(_){
+define(function(require){
+    var _ = require('underscore');
 
-	// @TODO: repeat currently repeats only the last element, we need repeat = 'set' or something in order to prevent re-randomizing of exRandom...
+    // @TODO: repeat currently repeats only the last element, we need repeat = 'set' or something in order to prevent re-randomizing of exRandom...
 
     RandomizerProvider.$inject = ['randomizeInt', 'randomizeRange', 'Collection'];
     function RandomizerProvider(randomizeInt, randomizeRange, Collection){
@@ -28,7 +29,7 @@ define(['underscore'],function(_){
                 return cache[seed];
             }
 
-			// save result in cache
+            // save result in cache
             cache[seed] = randomizeInt(length);
 
             return cache[seed];
@@ -39,7 +40,7 @@ define(['underscore'],function(_){
             var coll = cache[seed];
             var result;
 
-			// if needed create collection and set it in seed
+            // if needed create collection and set it in seed
             if (_.isUndefined(coll)){
                 coll = cache[seed] = new Collection(_.range(length));
                 return coll.first();
@@ -49,15 +50,15 @@ define(['underscore'],function(_){
                 throw new Error('This seed  ('+ seed +') points to a collection with the wrong length, you can only use a seed for sets of the same length');
             }
 
-			// if this is a repeated element:
+            // if this is a repeated element:
             if (repeat) {
                 return coll.current();
             }
 
-			// if we've reached the end
+            // if we've reached the end
             result = coll.next();
 
-			// if we've reached the end of the collection (next)
+            // if we've reached the end of the collection (next)
             if (_.isUndefined(result)){
                 return coll.first();
             } else {
@@ -70,7 +71,7 @@ define(['underscore'],function(_){
             var coll = cache[seed];
             var result;
 
-			// if needed create collection and set it in seed
+            // if needed create collection and set it in seed
             if (_.isUndefined(coll)){
                 coll = cache[seed] = new Collection(randomizeRange(length));
                 return coll.first();
@@ -80,16 +81,16 @@ define(['underscore'],function(_){
                 throw new Error('This seed  ('+ seed +') points to a collection with the wrong length, you can only use a seed for sets of the same length');
             }
 
-			// if this is a repeated element:
+            // if this is a repeated element:
             if (repeat) {
                 return coll.current();
             }
 
-			// if we've reached the end
+            // if we've reached the end
             result = coll.next();
 
-			// if we've reached the end of the collection (next)
-			// we should re-randomize
+            // if we've reached the end of the collection (next)
+            // we should re-randomize
             if (_.isUndefined(result)){
                 coll = cache[seed] = new Collection(randomizeRange(length));
                 return coll.first();

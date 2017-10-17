@@ -9,7 +9,7 @@ define(function(require){
 
     var module = angular.module('randomizeMock', []);
 
-	// define settings and reset defaults
+    // define settings and reset defaults
     var settings = {};
     module.constant('randomizeSettings', settings);
     module.config(function(randomizeSettings){
@@ -17,21 +17,21 @@ define(function(require){
         randomizeSettings.length = 3;
     });
 
-	/**
+    /**
 	 * Just plain random
 	 */
     module.value('randomizeRandom', function(){
         return settings.random;
     });
 
-	/**
+    /**
 	 * Just lodash shuffle...
 	 */
     module.value('randomizeShuffle', function(arr){
         return _(arr).reverse().value();
     });
 
-	/*
+    /*
 	 * a function that returns a random integer between 0 and length
 	 * @param length: the upper boundary to the randomization.
 	 */
@@ -39,7 +39,7 @@ define(function(require){
         return settings.length;
     });
 
-	/**
+    /**
 	 * a function that returns a random array of integers between 0 and length
 	 * @param length: the upper boundary to the randomization.
 	 */

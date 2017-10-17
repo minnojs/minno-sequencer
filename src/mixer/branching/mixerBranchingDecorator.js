@@ -14,7 +14,7 @@ define(function(require){
 
         return mix;
 
-		/**
+        /**
 		 * Branching mixer
 		 * @return {Array}         [A data array with objects to continue with]
 		 */
@@ -23,7 +23,7 @@ define(function(require){
             return evaluate(obj.conditions, context) ? obj.data || [] : obj.elseData || [];
         }
 
-		/**
+        /**
 		 * multiBranch mixer
 		 * @return {Array}         [A data array with objects to continue with]
 		 */

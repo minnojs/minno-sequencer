@@ -1,8 +1,8 @@
 define(function(require){
     var _ = require('underscore');
 
-    mixerConditionProvider.$inject = ['mixerDotNotation', 'piConsole'];
-    function mixerConditionProvider(dotNotation, piConsole){
+    mixerConditionProvider.$inject = ['mixerDotNotation'];
+    function mixerConditionProvider(dotNotation){
         var operatorHash = {
             gt: forceNumeric(_.gt),
             greaterThan: forceNumeric(_.gt),
@@ -20,7 +20,6 @@ define(function(require){
             var left = dotNotation(condition.compare,context);
             var right = dotNotation(condition.to,context);
 
-            piConsole(['conditions']).info('Condition: ', left, operator || 'equals', right, condition);
             if (condition.DEBUG && console) console.info('Condition: ', left, condition.operator || 'equals', right, condition); // eslint-disable-line no-console 
 
             return condition.negate

@@ -4,7 +4,7 @@ define(function(require){
     mixerSequenceProvider.$inject = ['mixer'];
     function mixerSequenceProvider(mix){
 
-		/**
+        /**
 		 * MixerSequence takes an mixer array and allows browsing back and forth within it
 		 * @param {Array} arr [a mixer array]
 		 */
@@ -16,7 +16,7 @@ define(function(require){
         }
 
         _.extend(MixerSequence.prototype, {
-			/**
+            /**
 			 * Add sequence to mixer
 			 * @param {[type]} arr     Sequence
 			 * @param {[type]} reverse Whether to start from begining or end
@@ -26,12 +26,12 @@ define(function(require){
             },
 
             proceed: function(direction, context){
-				// get last subSequence
+                // get last subSequence
                 var subSequence = this.stack[this.stack.length-1];
                 var isNext = (direction === 'next');
 
-				// if we ran out of sequence
-				// add the original sequence back in
+                // if we ran out of sequence
+                // add the original sequence back in
                 if (!subSequence) {
                     throw new Error ('mixerSequence: subSequence not found');
                 }
@@ -40,19 +40,19 @@ define(function(require){
 
                 var el = subSequence.sequence[subSequence.pointer];
 
-				// if we ran out of elements, go to previous level (unless we are on the root sequence)
+                // if we ran out of elements, go to previous level (unless we are on the root sequence)
                 if (_.isUndefined(el) && this.stack.length > 1){
                     this.stack.pop();
                     return this.proceed.call(this,direction,context);
                 }
 
-				// if element is a mixer, mix it
+                // if element is a mixer, mix it
                 if (el && el.mixer){
                     this.add(mix(el,context), !isNext);
                     return this.proceed.call(this,direction,context);
                 }
 
-				// regular element or undefined (end of sequence)
+                // regular element or undefined (end of sequence)
                 return this;
             },
 
@@ -66,13 +66,13 @@ define(function(require){
                 return this.proceed.call(this, 'prev',context);
             },
 
-			/**
+            /**
 			 * Return current element
 			 * should **never** return a mixer - supposed to abstract them away
 			 * @return {[type]} undefined or element
 			 */
             current:function(){
-				// get last subSequence
+                // get last subSequence
                 var subSequence = this.stack[this.stack.length-1];
 
                 if (!subSequence) {
@@ -85,7 +85,7 @@ define(function(require){
                     return undefined;
                 }
 
-				// extend element with meta data
+                // extend element with meta data
                 el.$meta = this.meta();
 
                 return el;
@@ -95,7 +95,7 @@ define(function(require){
                 return {
                     number: this.pointer,
 
-					// sum of sequence length, minus one (the mixer) for each level of stack except the last
+                    // sum of sequence length, minus one (the mixer) for each level of stack except the last
                     outOf:  _.reduce(this.stack, function(memo,sub){return memo + sub.sequence.length-1;},0)+1
                 };
             }

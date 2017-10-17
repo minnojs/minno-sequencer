@@ -1,6 +1,6 @@
 define(['angular', './dotNotation','angularMocks'], function(angular,dotNotationProvider){
 
-	// setup module for testing;
+    // setup module for testing;
     angular.module('dotNotationModule',[]).value('dotNotation',dotNotationProvider);
 
     describe('dotNotation', function(){
@@ -11,8 +11,8 @@ define(['angular', './dotNotation','angularMocks'], function(angular,dotNotation
                 grandChild: {}
             },
             arrChild: [
-				{child:{}},
-				[{}]
+                {child:{}},
+                [{}]
             ]
         };
         beforeEach(module('dotNotationModule'));
@@ -39,9 +39,9 @@ define(['angular', './dotNotation','angularMocks'], function(angular,dotNotation
             expect(dn('arrChild.1.0')).toBe(parent.arrChild[1][0]);
         });
 
-		// it('should return array members with [] notation', function(){
-		//	expect(dn('arrChild[0]')).toBe(parent.arrChild[0]);
-		//	expect(dn('arrChild[1][0]')).toBe(parent.arrChild[1][0]);
-		// });
+        // it('should return array members with [] notation', function(){
+        //	expect(dn('arrChild[0]')).toBe(parent.arrChild[0]);
+        //	expect(dn('arrChild[1][0]')).toBe(parent.arrChild[1][0]);
+        // });
     });
 });

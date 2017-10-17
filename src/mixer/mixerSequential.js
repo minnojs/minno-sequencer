@@ -16,13 +16,13 @@ define(function(require){
                 return sequence;
             }
 
-			// mix obj
+            // mix obj
             mixed = mix(obj, context);
 
-			// remove obj from sequence
+            // remove obj from sequence
             sequence.shift();
 
-			// concat mixed and sequence
+            // concat mixed and sequence
             mixed = mixed.concat(sequence);
 
             return _.isUndefined(mixed[0]) || _.isUndefined(mixed[0].mixer) ? mixed : mixerSequential(mixed, context, depth);

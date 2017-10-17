@@ -1,5 +1,6 @@
-define(['underscore'],function(_){
-	/*
+define(function(require){
+    var _ = require('underscore');
+    /*
 	 * The constructor for an Array wrapper
 	 */
 
@@ -10,7 +11,7 @@ define(['underscore'],function(_){
                 return arr;
             }
 
-			// Make sure we are creating this array out of a valid argument
+            // Make sure we are creating this array out of a valid argument
             if (!_.isUndefined(arr) && !_.isArray(arr) && !(arr instanceof Collection)) {
                 throw new Error('Collections can only be constructed from arrays');
             }
@@ -18,8 +19,8 @@ define(['underscore'],function(_){
             this.collection = arr || [];
             this.length = this.collection.length;
 
-			// pointer to the current location within the array
-			// we start with -1 so that the initial next points to the begining of the array
+            // pointer to the current location within the array
+            // we start with -1 so that the initial next points to the begining of the array
             this.pointer = -1;
         }
 
@@ -52,14 +53,14 @@ define(['underscore'],function(_){
                 return this.collection[--this.pointer];
             },
 
-			// add list of items to the collection
+            // add list of items to the collection
             add : function(list){
-				// dont allow adding nothing
+                // dont allow adding nothing
                 if (!arguments.length) {
                     return this;
                 }
 
-				// make sure list is as an array
+                // make sure list is as an array
                 list = _.isArray(list) ? list : [list];
                 this.collection = this.collection.concat(list);
 
@@ -68,19 +69,19 @@ define(['underscore'],function(_){
                 return this;
             },
 
-			// return the item at index
+            // return the item at index
             at: function(index){
                 return this.collection[index];
             }
         });
 
 
-		// Stuff we took out of bootstrap that can augment the collection
-		// **************************************************************
+        // Stuff we took out of bootstrap that can augment the collection
+        // **************************************************************
         var methods = ['where','filter'];
         var slice = Array.prototype.slice;
 
-		// Mix in each Underscore method as a proxy to `Collection#models`.
+        // Mix in each Underscore method as a proxy to `Collection#models`.
         _.each(methods, function(method) {
             Collection.prototype[method] = function() {
                 var args = slice.call(arguments);

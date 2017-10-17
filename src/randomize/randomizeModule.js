@@ -7,18 +7,18 @@ define(function(require){
     var _ = require('underscore');
     var module = angular.module('randomize', []);
 
-	/**
+    /**
 	 * Just plain random
 	 */
 
     module.value('randomizeRandom', Math.random);
 
-	/**
+    /**
 	 * Just lodash shuffle...
 	 */
     module.value('randomizeShuffle', _.shuffle);
 
-	/*
+    /*
 	 * a function that returns a random integer between 0 and length
 	 * @param length: the upper boundary to the randomization.
 	 */
@@ -26,7 +26,7 @@ define(function(require){
         return Math.floor(Math.random()*length);
     });
 
-	/**
+    /**
 	 * a function that returns a random array of integers between 0 and length
 	 * @param length: the upper boundary to the randomization.
 	 */

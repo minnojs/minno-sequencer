@@ -1,6 +1,6 @@
 define(['underscore'],function(_){
 
-	/**
+    /**
 	 * A function that maps a mixer object into a sequence.
 	 *
 	 * The basic structure of such an obect is:
@@ -23,8 +23,8 @@ define(['underscore'],function(_){
         function mix(obj){
             var mixerName = obj.mixer;
 
-			// if this isn't a mixer
-			// make sure we catch mixers that are set with undefined by accident...
+            // if this isn't a mixer
+            // make sure we catch mixers that are set with undefined by accident...
             if (!(_.isPlainObject(obj) && 'mixer' in obj)){
                 return [obj];
             }
@@ -73,7 +73,7 @@ define(['underscore'],function(_){
                 return result;
             },
 
-			// randomize any elements
+            // randomize any elements
             random: function(obj, context){
                 var sequence = obj.data ? deepMixer(obj.data, context) : [];
                 return shuffle(sequence);

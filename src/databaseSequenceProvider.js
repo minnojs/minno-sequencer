@@ -4,7 +4,7 @@ define(function(require){
     SequenceProvider.$inject = ['MixerSequence'];
     function SequenceProvider(MixerSequence){
 
-		/**
+        /**
 		 * Sequence Constructor:
 		 * Manage the progression of a sequence, including parsing (mixing, inheritance and templating).
 		 * @param  {String  } namespace [pages or questions (the type of db.Store)]
@@ -19,19 +19,19 @@ define(function(require){
         }
 
         _.extend(Sequence.prototype, {
-			// only mix
+            // only mix
             next: function(context){
                 this.mixerSequence.next(context);
                 return this;
             },
 
-			// anti mix
+            // anti mix
             prev: function(context){
                 this.mixerSequence.prev(context);
                 return this;
             },
 
-			/**
+            /**
 			 * Return the element currently in focus.
 			 * It always returns either an element or undefined (mixers are abstrcted away)
 			 * @param  {[type]} context [description]
@@ -39,10 +39,10 @@ define(function(require){
 			 */
             current: function(context, options){
                 context || (context = {});
-				// must returned an element or undefined
+                // must returned an element or undefined
                 var obj = this.mixerSequence.current(context);
 
-				// in case this is the end of the sequence
+                // in case this is the end of the sequence
                 if (!obj){
                     return obj;
                 }
@@ -50,7 +50,7 @@ define(function(require){
                 return this.db.inflate(this.namespace, obj, context, options);
             },
 
-			/**
+            /**
 			 * Returns an array of elements, created by proceeding through the whole sequence.
 			 * @return {[type]} [description]
 			 */

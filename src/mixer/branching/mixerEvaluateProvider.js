@@ -3,7 +3,7 @@ define(function(require){
 
     evaluateProvider.$inject = ['mixerCondition'];
     function evaluateProvider(condition){
-		/**
+        /**
 		 * Checks if a conditions set is true
 		 * @param  {Array} conditions [an array of conditions]
 		 * @param  {Object} context   [A context for the condition checker]
@@ -11,12 +11,12 @@ define(function(require){
 		 */
 
         function evaluate(conditions,context){
-			// make && the default
+            // make && the default
             _.isArray(conditions) && (conditions = {and:conditions});
 
             function test(cond){return evaluate(cond,context);}
 
-			// && objects
+            // && objects
             if (conditions.and){
                 return _.every(conditions.and, test);
             }
@@ -24,7 +24,7 @@ define(function(require){
                 return !_.every(conditions.nand, test);
             }
 
-			// || objects
+            // || objects
             if (conditions.or){
                 return _.some(conditions.or, test);
             }

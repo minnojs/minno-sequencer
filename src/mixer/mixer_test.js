@@ -1,4 +1,4 @@
-define(['underscore','./mixerModule', '../randomize/randomizeModuleMock'],function(){
+define(['underscore','./mixerModule', '../randomize/randomizeModuleMock'],function(){ 
 
     describe('Mixer', function(){
         var mixer;
@@ -103,7 +103,7 @@ define(['underscore','./mixerModule', '../randomize/randomizeModuleMock'],functi
                         data: [
                             0,
                             {mixer:'repeat', times:1, data:[
-								{mixer:'repeat', times:2, data:[2]}
+                                {mixer:'repeat', times:2, data:[2]}
                             ]},
                             3
                         ]
@@ -216,7 +216,7 @@ define(['underscore','./mixerModule', '../randomize/randomizeModuleMock'],functi
                 create([
                     {mixer:'wrapper', data:[
                         {mixer:'wrapper', data:[
-							{test:1}
+                            {test:1}
                         ]}
                     ]}
                 ]).next();
@@ -225,14 +225,14 @@ define(['underscore','./mixerModule', '../randomize/randomizeModuleMock'],functi
 
             it('should support (nested) going back', function(){
                 create([
-					{test:0},
+                    {test:0},
                     {mixer:'wrapper', data:[
                         {mixer:'wrapper', data:[
-							{test:1},{test:2}
+                            {test:1},{test:2}
                         ]},
-						{test:3}
+                        {test:3}
                     ]},
-					{test:4}
+                    {test:4}
                 ]).next().next().next().next().next();
                 expect_current().toBe(4);
                 sequence.prev();
@@ -574,8 +574,8 @@ define(['underscore','./mixerModule', '../randomize/randomizeModuleMock'],functi
                 it('should support nested operators', function(){
                     expect(evaluate([{and:[1,1,{or:[0,0]}]}])).not.toBeTruthy();
                     expect(evaluate([
-						{and:[1,1,{or:[0,0]}]},
-						{nor:[1,1,1, {and:[1,1]}]}
+                        {and:[1,1,{or:[0,0]}]},
+                        {nor:[1,1,1, {and:[1,1]}]}
                     ])).not.toBeTruthy();
                 });
             });
@@ -630,10 +630,10 @@ define(['underscore','./mixerModule', '../randomize/randomizeModuleMock'],functi
                     expect(mixer({
                         mixer:'multiBranch',
                         branches:[
-							{conditions:[{}]}, //always false
-							{conditions: [{compare:'global.1',to:2}],data: response},
-							{conditions: [{compare:'global.1',to:2}],data: 'false'},
-							{}
+                            {conditions:[{}]}, //always false
+                            {conditions: [{compare:'global.1',to:2}],data: response},
+                            {conditions: [{compare:'global.1',to:2}],data: 'false'},
+                            {}
                         ],
                         elseData: 'else'
                     }, {global:[1,2,3]})).toBe(response);
@@ -645,10 +645,10 @@ define(['underscore','./mixerModule', '../randomize/randomizeModuleMock'],functi
                     expect(mixer({
                         mixer:'multiBranch',
                         branches:[
-							{conditions:[{}]}, //always false
-							{conditions: [{compare:'global.1',to:2}],data: response},
-							{conditions: [{compare:'global.1',to:2}],data: 'false'},
-							{}
+                            {conditions:[{}]}, //always false
+                            {conditions: [{compare:'global.1',to:2}],data: response},
+                            {conditions: [{compare:'global.1',to:2}],data: 'false'},
+                            {}
                         ],
                         elseData: 'else'
                     })).toBe(response);
@@ -662,10 +662,10 @@ define(['underscore','./mixerModule', '../randomize/randomizeModuleMock'],functi
                     expect(mixer({
                         mixer:'multiBranch',
                         branches:[
-							{conditions:[{}]}, //always false
-							{conditions: [{compare:'global.1',to:2}],data: 'false'},
-							{conditions: [{compare:'global.1',to:2}],data: 'false'},
-							{conditions:[{}]} //always false
+                            {conditions:[{}]}, //always false
+                            {conditions: [{compare:'global.1',to:2}],data: 'false'},
+                            {conditions: [{compare:'global.1',to:2}],data: 'false'},
+                            {conditions:[{}]} //always false
                         ],
                         elseData: response
                     }, {global:[]})).toBe(response);

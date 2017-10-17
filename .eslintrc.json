@@ -7,12 +7,25 @@
         "no-console": [1]
     },
     "env": {
-        "browser": true
+        "browser": true,
+        "amd": true
     },
     "globals": {
-        "require" : true,
-        "requirejs" : true,
-        "define" : true
+        "requirejs" : true
     },
+    "overrides": [
+        {
+            "files": ["**/*_test.js"],
+            "env": {
+                "jasmine": true
+            },
+            "rules": {
+                "globals": {
+                    "module": true,
+                    "inject": true
+                }
+            }
+        }
+    ],
     "extends": "eslint:recommended"
 }

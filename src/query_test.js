@@ -5,13 +5,13 @@ define(['./databaseModule'],function(){
     describe('database query',function(){
 
         var result
-			, coll = [
-				{set:1, data:{val:1, other:'value'}},
-				{set:1, data:{val:2}},
-				{set:2, data:{val:3}},
-				{set:2, data:{val:4, handle:'innerHandle'}, handle:'outerHandle'}
-]
-			, q;
+            , coll = [
+                {set:1, data:{val:1, other:'value'}},
+                {set:1, data:{val:2}},
+                {set:2, data:{val:3}},
+                {set:2, data:{val:4, handle:'innerHandle'}, handle:'outerHandle'}
+            ]
+            , q;
 
         beforeEach(module('database'));
         beforeEach(module(function(){
@@ -41,7 +41,7 @@ define(['./databaseModule'],function(){
         });
 
         it('should support querying by data:Obj', function(){
-			// the query only returns one row, we should reset the randomizer accordingly
+            // the query only returns one row, we should reset the randomizer accordingly
             randomizer.random.and.returnValue(0);
 
             q({data:{val:1}});
@@ -52,7 +52,7 @@ define(['./databaseModule'],function(){
         });
 
         it('should support querying by a data:Function', function(){
-			// the query only returns one row, we should reset the randomizer accordingly
+            // the query only returns one row, we should reset the randomizer accordingly
             randomizer.random.and.returnValue(0);
 
             q({data:function(value){return value.data.val === 3;}});
@@ -60,7 +60,7 @@ define(['./databaseModule'],function(){
         });
 
         it('should support querying by a data:String (handle - on object)', function(){
-			// the query only returns one row, we should reset the randomizer accordingly
+            // the query only returns one row, we should reset the randomizer accordingly
             randomizer.random.and.returnValue(0);
 
             q({data:'outerHandle'});
@@ -68,7 +68,7 @@ define(['./databaseModule'],function(){
         });
 
         it('should support querying by a data:String (handle - in data)', function(){
-			// the query only returns one row, we should reset the randomizer accordingly
+            // the query only returns one row, we should reset the randomizer accordingly
             randomizer.random.and.returnValue(0);
 
             q({data:'innerHandle'});

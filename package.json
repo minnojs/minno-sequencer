@@ -1,24 +1,27 @@
 {
   "name": "sequencer",
   "version": "1.0.0",
-  "description": "",
-  "main": "Gruntfile.js",
+  "description": "A sequence manager for minnojs",
+  "main": "sequencer.js",
   "directories": {
     "test": "test"
   },
-  "dependencies": {
+  "devDependencies": {
+    "amdclean": "^2.7.0",
+    "angular": "^1.2.27",
+    "angular-mocks": "^1.2.27",
     "jasmine-core": "^2.8.0",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.0",
-    "karma-requirejs": "^1.1.0"
-  },
-  "devDependencies": {
     "karma-phantomjs-launcher": "^1.0.4",
+    "karma-requirejs": "^1.1.0",
+    "lodash-compat": "^3.10.0",
     "requirejs": "^2.3.5"
   },
   "scripts": {
     "test": "karma start",
+    "build": "r.js -o tools/requirejs.build.js",
     "vendor": "mkdir -p vendor && cp node_modules/angular/angular.js vendor && cp node_modules/angular-mocks/angular-mocks.js vendor && cp node_modules/lodash-compat/index.js vendor/lodash.js"
   },
   "author": "",

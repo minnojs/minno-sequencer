@@ -6,7 +6,6 @@ define(function(require){
         require('../randomize/randomizeModule').name
     ]);
 
-    module.constant('piConsole', consoleProp(console))
     module.service('mixer', require('./mixer'));
     module.service('mixerSequential', require('./mixerSequential')); // is this even in use?
     module.service('mixerRecursive', require('./mixerRecursive')); // is this even in use?
@@ -23,9 +22,4 @@ define(function(require){
 
     return module;
 
-    function consoleProp(val){
-        return function prop(){
-            return val;
-        };
-    }
 });

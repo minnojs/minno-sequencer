@@ -39,9 +39,9 @@ define(['underscore', './databaseModule'],function(_){
             expect(store.add).toHaveBeenCalledWith(123);
         });
 
-		// namespace, coll, context
+        // namespace, coll, context
         describe(': inflate', function(){
-			// ************** inflate **************
+            // ************** inflate **************
             it('should not inflate if query has been inflated', function(){
                 db.inflate('ns', {$inflated:true}, 'context');
                 expect(inflateSpy).not.toHaveBeenCalled();
@@ -58,7 +58,7 @@ define(['underscore', './databaseModule'],function(_){
                 expect(inflateSpy).toHaveBeenCalledWith(obj,undefined, db.randomizer);
             });
 
-			// ************** template **************
+            // ************** template **************
             it('should not template if query has been interpolated', function(){
                 var query = {};
                 db.inflate('ns', query, 'context');
@@ -87,7 +87,7 @@ define(['underscore', './databaseModule'],function(_){
                 expect(context.testData).toBe(123);
             });
 
-			// ************** addGlobal, addCurrent **************
+            // ************** addGlobal, addCurrent **************
             it('should add to global (addGlobal)', function(){
                 var context = {global:{}};
                 db.inflate('test', {$inflated:{addGlobal:{test:123}}}, context);
@@ -122,9 +122,9 @@ define(['underscore', './databaseModule'],function(_){
             };
 
             create = function(arr){
-				/*jshint newcap: false */
+                /*jshint newcap: false */
                 return (sequence = new databaseSequence('test', arr, db));
-				/*jshint newcap: true */
+                /*jshint newcap: true */
             };
         }));
 

@@ -11,7 +11,7 @@ define(['./databaseModule'],function(){
         }));
 
         beforeEach(inject(function(databaseInflate, Collection){
-			// any inherit = true will sequentialy inherit the objects in collection
+            // any inherit = true will sequentialy inherit the objects in collection
             inflate = function(source, collection){
                 var coll = new Collection(collection || []);
                 querySpy.and.callFake(function(){return coll.next();});
@@ -60,12 +60,12 @@ define(['./databaseModule'],function(){
         it('should return a copy, never the source', function(){
             var source;
 
-			// without inheritance
+            // without inheritance
             source = {};
             inflate(source);
             expect(result).not.toBe(source);
 
-			// with inheritance
+            // with inheritance
             source = {inherit:true};
             inflate(source, [{a:1}]);
             expect(result).not.toBe(source);
@@ -73,10 +73,10 @@ define(['./databaseModule'],function(){
 
         it('should recursively extend obj with the objects inherited by obj.inherit', function(){
             inflate({inherit:true}, [
-				{a:1, inherit:true},
-				{b:1, inherit:true},
-				{c:1},
-				{d:1}
+                {a:1, inherit:true},
+                {b:1, inherit:true},
+                {c:1},
+                {d:1}
             ]);
 
             expect(result.a).toBeDefined();
@@ -88,16 +88,16 @@ define(['./databaseModule'],function(){
         it('should throw an error if depth exceeds 10', function(){
             expect(function(){
                 inflate({inherit:true}, [
-					{inherit:true},
-					{inherit:true},
-					{inherit:true},
-					{inherit:true},
-					{inherit:true},
-					{inherit:true},
-					{inherit:true},
-					{inherit:true},
-					{inherit:true},
-					{}
+                    {inherit:true},
+                    {inherit:true},
+                    {inherit:true},
+                    {inherit:true},
+                    {inherit:true},
+                    {inherit:true},
+                    {inherit:true},
+                    {inherit:true},
+                    {inherit:true},
+                    {}
                 ]);
             }).toThrow();
 
@@ -112,12 +112,12 @@ define(['./databaseModule'],function(){
         it('should inherit keys from the parent', function(){
             var parent = {a:1, b:[1,2], c:{a:1}};
             inflate({inherit:true},[parent]);
-			// primitives
+            // primitives
             expect(result.a).toBe(parent.a);
-			// arrays
+            // arrays
             expect(result.b).not.toBe(parent.b);
             expect(result.b).toEqual(parent.b);
-			// objects
+            // objects
             expect(result.c).not.toBe(parent.c);
             expect(result.c).toEqual(parent.c);
         });

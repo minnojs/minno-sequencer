@@ -2,7 +2,8 @@
  *	The store is a collection of collection devided into namespaces.
  *	You can think of every namespace/collection as a table.
  */
-define(['underscore'],function(_){
+define(function(require){
+    var _ = require('underscore');
 
     storeProvider.$inject = ['Collection'];
     function storeProvider(Collection){

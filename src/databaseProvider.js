@@ -27,29 +27,30 @@ define(function(require){
                 var coll = this.getColl(namespace);
                 var result;
 
-				// inherit
-                if (!query.$inflated || query.reinflate) {
-                    query.$inflated = inflate(query, coll, this.randomizer);
-                    query.$templated = null; // we have to retemplate after querying, who know what new templates we got here...
+                try {
+                    // inherit
+                    if (!query.$inflated || query.reinflate) {
+                        query.$inflated = inflate(query, coll, this.randomizer);
+                        query.$templated = null; // we have to retemplate after querying, who know what new templates we got here...
+                    }
+
+                    // template
+                    if (!query.$templated || query.$inflated.regenerateTemplate){
+                        context[namespace + 'Meta'] = query.$meta;
+                        context[namespace + 'Data'] = templateObj(query.$inflated.data || {}, context, options); // make sure we support
+                        query.$templated = templateObj(query.$inflated, context, options);
+                    }
+
+                    result = query.$templated;
+                } catch(err) {
+                    if (this.onError) this.onError(err);
+                    throw err;
                 }
 
-				// template
-                if (!query.$templated || query.$inflated.regenerateTemplate){
-                    context[namespace + 'Meta'] = query.$meta;
-                    context[namespace + 'Data'] = templateObj(query.$inflated.data || {}, context, options); // make sure we support
-                    query.$templated = templateObj(query.$inflated, context, options);
-                }
+                // set flags
+                if (context.global && result.addGlobal) _.extend(context.global, result.addGlobal);
 
-                result = query.$templated;
-
-				// set flags
-                if (context.global && result.addGlobal){
-                    _.extend(context.global, result.addGlobal);
-                }
-
-                if (context.current && result.addCurrent){
-                    _.extend(context.current, result.addCurrent);
-                }
+                if (context.current && result.addCurrent) _.extend(context.current, result.addCurrent);
 
                 return query.$templated;
             },
