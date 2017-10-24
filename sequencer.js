@@ -7,7 +7,7 @@
                                 factory.commonjs = true;
                                 module.exports = factory(require('lodash-compat'), root);
                             } else {
-                                root.sequencer = factory(root._, root);
+                                root.Database = factory(root._, root);
                             }
                         }(this, function factory(underscore) {var mixer_mixer, mixer_branching_dotNotation, mixer_branching_mixerDotNotationProvider, mixer_branching_mixerConditionProvider, mixer_branching_mixerEvaluateProvider, mixer_branching_mixerBranchingDecorator, mixer_mixerSequenceProvider, mixer_main, template_templateObjProvider, template_main, collection_collectionProvider, randomizer_randomizerProvider, queryProvider, inflateProvider, store_storeProvider, databaseSequenceProvider, databaseProvider, databaseNoAngular, index, _, require;
 mixer_mixer = function () {

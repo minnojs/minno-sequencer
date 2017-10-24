@@ -18,7 +18,7 @@ module.exports = function(config) {
       {pattern: 'vendor/*.js', included: false},
       {pattern: 'test/matchers.js', included: false },
       {pattern: 'src/**/*.js', included: false },
-      'test-main.js',
+      'tools/test-main.js',
     ],
 
 

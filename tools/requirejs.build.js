@@ -33,7 +33,7 @@
                                 factory.commonjs = true;
                                 module.exports = factory(require('lodash-compat'), root);
                             } else {
-                                root.sequencer = factory(root._, root);
+                                root.Database = factory(root._, root);
                             }
                         }(this, function factory(underscore) {`,
                 end: `return index;
