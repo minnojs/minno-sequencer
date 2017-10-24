@@ -1,8 +1,8 @@
 {
-  "name": "sequencer",
+  "name": "minno-sequencer",
   "version": "1.0.0",
   "description": "A sequence manager for minnojs",
-  "main": "sequencer.js",
+  "main": "minno-sequencer.js",
   "directories": {
     "test": "test"
   },

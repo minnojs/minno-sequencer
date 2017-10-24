@@ -45,5 +45,5 @@
     },
 
     name: 'index',
-    out: '../sequencer.js'
+    out: '../minno-sequencer.js'
 });
