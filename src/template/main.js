@@ -1,3 +1,4 @@
-define(function(require){
-    return require('./templateObjProvider')({}); 
-});
+import templateObjProvider from './templateObjProvider';
+
+export default templateObjProvider({}); 
+

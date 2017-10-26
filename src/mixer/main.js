@@ -1,35 +1,38 @@
-define(function(require){
-    var _ = require('underscore');
+import _ from 'lodash';
 
-    var mixer = require('./mixer')(
-        _.shuffle, // randomizeShuffle
-        Math.random // randomizeRandom
-    );
+import Mixer from './mixer';
+import mixerDotNotationProvider from './branching/mixerDotNotationProvider';
+import mixerConditionProvider from './branching/mixerConditionProvider';
+import mixerEvaluateProvider from './branching/mixerEvaluateProvider';
+import mixerBranchingDecorator from './branching/mixerBranchingDecorator';
+import mixerSequenceProvider from './mixerSequenceProvider';
+import dotNotation from './branching/dotNotation'; // this is a value, doesn't need to be evaluated
 
-    var dotNotation = require('./branching/dotNotation'); // this is a value, doesn't need to be evaluated
+export default MixerSequence;
 
-    var mixerDotNotation = require('./branching/mixerDotNotationProvider')(dotNotation);
-    var mixerCondition = require('./branching/mixerConditionProvider')(
-        mixerDotNotation,
-        piConsole
-    );
+var mixer = Mixer(
+    _.shuffle, // randomizeShuffle
+    Math.random // randomizeRandom
+);
 
-    var mixerEvaluate = require('./branching/mixerEvaluateProvider')(mixerCondition);
+var mixerDotNotation = mixerDotNotationProvider(dotNotation);
+var mixerCondition = mixerConditionProvider(
+    mixerDotNotation,
+    piConsole
+);
 
-    var mixerDefaultContext = {};
+var mixerEvaluate = mixerEvaluateProvider(mixerCondition);
 
-    require('./branching/mixerBranchingDecorator')(
-        mixer,
-        mixerEvaluate,
-        mixerDefaultContext
-    );
+var mixerDefaultContext = {};
 
-    var MixerSequence = require('./mixerSequenceProvider')(mixer);
+mixerBranchingDecorator(
+    mixer,
+    mixerEvaluate,
+    mixerDefaultContext
+);
 
-    return MixerSequence;
+var MixerSequence = mixerSequenceProvider(mixer);
 
-    function piConsole(){
-        return console;
-    }
-
-});
+function piConsole(){
+    return console;
+}

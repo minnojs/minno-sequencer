@@ -1,3 +1,2 @@
-define([ './databaseNoAngular' ], function(sequencer) {
-    return sequencer;
-});
+import sequencer from './databaseNoAngular';
+export default sequencer;

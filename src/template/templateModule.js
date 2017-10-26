@@ -1,11 +1,11 @@
-define(function(require){
-    var angular = require('angular');
+import angular from 'angular';
+import templateFilter from './templateFilter';
+import templateObjProvider from './templateObjProvider';
 
-    var module = angular.module('template', []);
+export default module;
 
-    module.filter('template', require('./templateFilter'));
-    module.service('templateObj', require('./templateObjProvider'));
-    module.constant('templateDefaultContext',{});
+var module = angular.module('template', []);
 
-    return module;
-});
+module.filter('template', templateFilter);
+module.service('templateObj', templateObjProvider);
+module.constant('templateDefaultContext',{});

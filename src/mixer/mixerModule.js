@@ -1,25 +1,33 @@
-define(function(require){
+import angular from 'angular';
+import randomizeModule from '../randomize/randomizeModule';
 
-    var angular = require('angular');
+import mixer from './mixer';
+import mixerSequential from './mixerSequential';
+import mixerRecursive from './mixerRecursive';
+import mixerSequenceProvider from './mixerSequenceProvider';
 
-    var module = angular.module('mixer',[
-        require('../randomize/randomizeModule').name
-    ]);
+import dotNotation from './branching/dotNotation';
+import mixerDotNotationProvider from './branching/mixerDotNotationProvider';
+import mixerConditionProvider from './branching/mixerConditionProvider';
+import mixerBranchingDecorator from './branching/mixerBranchingDecorator';
+import mixerEvaluateProvider from './branching/mixerEvaluateProvider';
 
-    module.service('mixer', require('./mixer'));
-    module.service('mixerSequential', require('./mixerSequential')); // is this even in use?
-    module.service('mixerRecursive', require('./mixerRecursive')); // is this even in use?
-    module.service('MixerSequence', require('./mixerSequenceProvider'));
+export default module;
 
-    module.value('dotNotation', require('./branching/dotNotation'));
-    module.service('mixerDotNotation', require('./branching/mixerDotNotationProvider'));
-    module.service('mixerCondition', require('./branching/mixerConditionProvider'));
-    module.service('mixerEvaluate', require('./branching/mixerEvaluateProvider'));
-    module.config(['$provide', function($provide){
-        $provide.decorator('mixer', require('./branching/mixerBranchingDecorator'));
-    }]);
-    module.constant('mixerDefaultContext', {});
+var module = angular.module('mixer',[
+    randomizeModule.name
+]);
 
-    return module;
+module.service('mixer', mixer);
+module.service('mixerSequential', mixerSequential); // is this even in use?
+module.service('mixerRecursive', mixerRecursive); // is this even in use?
+module.service('MixerSequence', mixerSequenceProvider);
 
-});
+module.value('dotNotation', dotNotation);
+module.service('mixerDotNotation', mixerDotNotationProvider);
+module.service('mixerCondition', mixerConditionProvider);
+module.service('mixerEvaluate', mixerEvaluateProvider);
+module.config(['$provide', function($provide){
+    $provide.decorator('mixer', mixerBranchingDecorator);
+}]);
+module.constant('mixerDefaultContext', {});

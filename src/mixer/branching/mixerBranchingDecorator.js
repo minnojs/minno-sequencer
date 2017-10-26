@@ -2,46 +2,44 @@
  * Registers the branching mixers with the mixer
  * @return {function}         [mixer decorator]
  */
-define(function(require){
 
-    var _ = require('underscore');
+import _ from 'lodash';
 
-    mixerBranchingDecorator.$inject = ['$delegate','mixerEvaluate','mixerDefaultContext'];
-    function mixerBranchingDecorator(mix, evaluate, mixerDefaultContext){
+export default mixerBranchingDecorator;
 
-        mix.mixers.branch = branch;
-        mix.mixers.multiBranch = multiBranch;
+mixerBranchingDecorator.$inject = ['$delegate','mixerEvaluate','mixerDefaultContext'];
+function mixerBranchingDecorator(mix, evaluate, mixerDefaultContext){
 
-        return mix;
+    mix.mixers.branch = branch;
+    mix.mixers.multiBranch = multiBranch;
 
-        /**
-		 * Branching mixer
-		 * @return {Array}         [A data array with objects to continue with]
-		 */
-        function branch(obj, context){
-            context = _.extend(context || {}, mixerDefaultContext);
-            return evaluate(obj.conditions, context) ? obj.data || [] : obj.elseData || [];
-        }
+    return mix;
 
-        /**
-		 * multiBranch mixer
-		 * @return {Array}         [A data array with objects to continue with]
-		 */
-        function multiBranch(obj, context){
-            context = _.extend(context || {}, mixerDefaultContext);
-            var row;
-
-            row = _.find(obj.branches, function(branch){
-                return evaluate(branch.conditions, context);
-            });
-
-            if (row) {
-                return row.data || [];
-            }
-
-            return obj.elseData || [];
-        }
+    /**
+     * Branching mixer
+     * @return {Array}         [A data array with objects to continue with]
+     */
+    function branch(obj, context){
+        context = _.extend(context || {}, mixerDefaultContext);
+        return evaluate(obj.conditions, context) ? obj.data || [] : obj.elseData || [];
     }
 
-    return mixerBranchingDecorator;
-});
+    /**
+     * multiBranch mixer
+     * @return {Array}         [A data array with objects to continue with]
+     */
+    function multiBranch(obj, context){
+        context = _.extend(context || {}, mixerDefaultContext);
+        var row;
+
+        row = _.find(obj.branches, function(branch){
+            return evaluate(branch.conditions, context);
+        });
+
+        if (row) {
+            return row.data || [];
+        }
+
+        return obj.elseData || [];
+    }
+}

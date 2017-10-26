@@ -1,22 +1,19 @@
-define(function(require){
-    var _ = require('underscore');
+import _ from 'lodash';
+export default dotNotation;
 
-    function dotNotation(chain, obj){
+function dotNotation(chain, obj){
 
-        if (_.isUndefined(chain)) return;
-        if (_.isString(chain)) chain = chain.split('.');
+    if (_.isUndefined(chain)) return;
+    if (_.isString(chain)) chain = chain.split('.');
 
-        // @TODO maybe lodash _.get?
-        return chain.reduce(function(result, link){
+    // @TODO maybe lodash _.get?
+    return chain.reduce(function(result, link){
 
-            if (_.isPlainObject(result) || _.isArray(result)){
-                return result[link];
-            }
+        if (_.isPlainObject(result) || _.isArray(result)){
+            return result[link];
+        }
 
-            return undefined;
+        return undefined;
 
-        }, obj);
-    }
-
-    return dotNotation;
-});
+    }, obj);
+}

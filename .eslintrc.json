@@ -1,4 +1,7 @@
 {
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "rules": {
         "indent": [1, 4, {"SwitchCase": 1}],
         "quotes": [1,"single"],
@@ -6,26 +9,25 @@
         "semi": [1,"always"],
         "no-console": [1]
     },
-    "env": {
-        "browser": true,
-        "amd": true
-    },
     "globals": {
-        "requirejs" : true
+        "Promise": false
     },
+    "env": {
+        "browser": true
+    },
+    "extends": "eslint:recommended",
+
     "overrides": [
         {
-            "files": ["**/*_test.js"],
+            "files": [ "src/**/*_test.js" ],
+            "globals": {
+                "module": true,
+                "inject": true
+            },
             "env": {
                 "jasmine": true
-            },
-            "rules": {
-                "globals": {
-                    "module": true,
-                    "inject": true
-                }
             }
         }
-    ],
-    "extends": "eslint:recommended"
+    ]
+
 }

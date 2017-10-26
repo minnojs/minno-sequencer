@@ -1,57 +1,64 @@
-define(function(require){
-    var _ = require('underscore');
-    var global = this.piGlobal;
+import _ from 'lodash';
+var global = window.piGlobal;
 
-    var mixerSequence = require('./mixer/main');
-    var templateObj = require('./template/main');
+import mixerSequence from './mixer/main';
+import templateObj from './template/main';
+import collectionProvider from './collection/collectionProvider';
+import randomizerProvider from './randomizer/randomizerProvider';
 
-    var collection = require('./collection/collectionProvider')();
+import storeProvider from './store/storeProvider';
+import databaseSequenceProvider from './databaseSequenceProvider';
+import databaseProvider from './databaseProvider';
+import queryProvider from './queryProvider';
+import inflateProvider from './inflateProvider';
 
-    var DatabaseRandomizer = require('./randomizer/randomizerProvider')(
-        randomInt,// randomize int
-        randomArr,// randomize range
-        collection
-    );
+export default Database;
 
-    var databaseQuery = require('./queryProvider')(
-        collection,
-        piConsole
-    );
+var collection = collectionProvider();
 
-    var databaseInflate = require('./inflateProvider')(
-        databaseQuery,
-        {global: global}, // rootscope
-        piConsole
-    );
+var DatabaseRandomizer = randomizerProvider(
+    randomInt,// randomize int
+    randomArr,// randomize range
+    collection
+);
 
-    var DatabaseStore = require('./store/storeProvider')(
-        collection
-    );
+var databaseQuery = queryProvider(
+    collection,
+    piConsole
+);
 
-    var databaseSequence = require('./databaseSequenceProvider')(
-        mixerSequence
-    );
+var databaseInflate = inflateProvider(
+    databaseQuery,
+    {global: global}, // rootscope
+    piConsole
+);
+
+var DatabaseStore = storeProvider(
+    collection
+);
+
+var databaseSequence = databaseSequenceProvider(
+    mixerSequence
+);
 
 
-    var Database = require('./databaseProvider')(
-        DatabaseStore,
-        DatabaseRandomizer,
-        databaseInflate,
-        templateObj,
-        databaseSequence
-    );
+var Database = databaseProvider(
+    DatabaseStore,
+    DatabaseRandomizer,
+    databaseInflate,
+    templateObj,
+    databaseSequence
+);
 
-    return Database;
+function randomArr(length){
+    return _.shuffle(_.range(length));
+}
 
-    function randomArr(length){
-        return _.shuffle(_.range(length));
-    }
+function randomInt(length){
+    return Math.floor(Math.random()*length);
+}
 
-    function randomInt(length){
-        return Math.floor(Math.random()*length);
-    }
+function piConsole(){
+    return console;
+}
 
-    function piConsole(){
-        return console;
-    }
-});
