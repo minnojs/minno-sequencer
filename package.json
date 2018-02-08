@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "A sequence manager for minnojs",
   "main": "minno-sequencer.js",
+  "module": "src/index.js",
   "directories": {
     "test": "test"
   },
   "dependencies": {
-    "angular": "1.2.27",
     "lodash": "3.10.1"
   },
   "devDependencies": {
+    "angular": "1.2.27",
     "angular-mocks": "1.2.27",
     "jasmine-core": "^2.8.0",
     "karma": "^1.7.1",

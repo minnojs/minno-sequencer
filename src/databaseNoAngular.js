@@ -12,7 +12,7 @@ import databaseProvider from './databaseProvider';
 import queryProvider from './queryProvider';
 import inflateProvider from './inflateProvider';
 
-import piConsoleFactory from './piConsole';
+import piConsoleFactory from './console/piConsole';
 export default Database;
 
 var piConsole = piConsoleFactory(console);
@@ -43,13 +43,13 @@ var databaseSequence = databaseSequenceProvider(
     mixerSequence
 );
 
-
 var Database = databaseProvider(
     DatabaseStore,
     DatabaseRandomizer,
     databaseInflate,
     templateObj,
-    databaseSequence
+    databaseSequence,
+    piConsole
 );
 
 function randomArr(length){
@@ -59,8 +59,3 @@ function randomArr(length){
 function randomInt(length){
     return Math.floor(Math.random()*length);
 }
-
-function piConsole(){
-    return console;
-}
-

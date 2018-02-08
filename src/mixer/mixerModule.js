@@ -1,5 +1,6 @@
 import angular from 'angular';
 import randomizeModule from '../randomize/randomizeModule';
+import consoleModule from '../console/consoleModule';
 
 import mixer from './mixer';
 import mixerSequential from './mixerSequential';
@@ -15,7 +16,8 @@ import mixerEvaluateProvider from './branching/mixerEvaluateProvider';
 export default module;
 
 var module = angular.module('mixer',[
-    randomizeModule.name
+    randomizeModule.name,
+    consoleModule.name
 ]);
 
 module.service('mixer', mixer);

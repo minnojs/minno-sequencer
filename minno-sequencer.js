@@ -155,8 +155,8 @@ function mixerDotNotationProvider$1(dotNotation){
     return mixerDotNotation;
 }
 
-mixerConditionProvider$1.$inject = ['mixerDotNotation'];
-function mixerConditionProvider$1(dotNotation){
+mixerConditionProvider$1.$inject = ['mixerDotNotation','piConsole'];
+function mixerConditionProvider$1(dotNotation,piConsole){
     var operatorHash = {
         gt: forceNumeric(_.gt),
         greaterThan: forceNumeric(_.gt),
@@ -174,7 +174,16 @@ function mixerConditionProvider$1(dotNotation){
         var left = dotNotation(condition.compare,context);
         var right = dotNotation(condition.to,context);
 
-        if (condition.DEBUG && console) console.info('Condition: ', left, condition.operator || 'equals', right, condition); // eslint-disable-line no-console 
+        if (condition.DEBUG) piConsole({
+            type:'info',
+            message:'Condition info',
+            rows: [
+                ['Left: ', left], 
+                ['Operator: ', condition.operator || 'equals'],
+                ['Right: ', right]
+            ],
+            context: condition,
+        });
 
         return condition.negate
             ? !operator.apply(context,[left, right, context])
@@ -780,8 +789,8 @@ function SequenceProvider(MixerSequence){
     return Sequence;
 }
 
-DatabaseProvider.$inject = ['DatabaseStore', 'DatabaseRandomizer', 'databaseInflate', 'templateObj', 'databaseSequence'];
-function DatabaseProvider(Store, Randomizer, inflate, templateObj, DatabaseSequence){
+DatabaseProvider.$inject = ['DatabaseStore', 'DatabaseRandomizer', 'databaseInflate', 'templateObj', 'databaseSequence','piConsole'];
+function DatabaseProvider(Store, Randomizer, inflate, templateObj, DatabaseSequence, piConsole){
 
     function Database(){
         this.store = new Store();
@@ -806,32 +815,49 @@ function DatabaseProvider(Store, Randomizer, inflate, templateObj, DatabaseSeque
             var coll = this.getColl(namespace);
             var result;
 
+            // inherit
             try {
-                // inherit
                 if (!query.$inflated || query.reinflate) {
                     query.$inflated = inflate(query, coll, this.randomizer);
                     query.$templated = null; // we have to retemplate after querying, who know what new templates we got here...
                 }
+            } catch(err) {
+                piConsole({
+                    type:'error',
+                    message: 'Failed to inherit',
+                    error:err,
+                    context: query
+                });
+                if (this.onError) this.onError(err);
+                throw err;
+            }
 
-                // template
+            // template
+            try {
                 if (!query.$templated || query.$inflated.regenerateTemplate){
                     context[namespace + 'Meta'] = query.$meta;
                     context[namespace + 'Data'] = templateObj(query.$inflated.data || {}, context, options); // make sure we support
                     query.$templated = templateObj(query.$inflated, context, options);
                 }
-
-                result = query.$templated;
             } catch(err) {
+                piConsole({
+                    type:'error',
+                    message: 'Failed to apply template',
+                    error:err,
+                    context: query.$inflated
+                });
                 if (this.onError) this.onError(err);
                 throw err;
             }
+
+            result = query.$templated;
 
             // set flags
             if (context.global && result.addGlobal) _.extend(context.global, result.addGlobal);
 
             if (context.current && result.addCurrent) _.extend(context.current, result.addCurrent);
 
-            return query.$templated;
+            return result;
         },
 
         sequence: function(namespace, arr){
@@ -1062,13 +1088,13 @@ var databaseSequence = SequenceProvider(
     MixerSequence
 );
 
-
 var Database = DatabaseProvider(
     DatabaseStore,
     DatabaseRandomizer,
     databaseInflate,
     templateObj,
-    databaseSequence
+    databaseSequence,
+    piConsole
 );
 
 function randomArr(length){
@@ -1077,10 +1103,6 @@ function randomArr(length){
 
 function randomInt(length){
     return Math.floor(Math.random()*length);
-}
-
-function piConsole(){
-    return console;
 }
 
 return Database;

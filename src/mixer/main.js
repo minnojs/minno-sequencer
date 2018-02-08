@@ -7,7 +7,7 @@ import mixerEvaluateProvider from './branching/mixerEvaluateProvider';
 import mixerBranchingDecorator from './branching/mixerBranchingDecorator';
 import mixerSequenceProvider from './mixerSequenceProvider';
 import dotNotation from './branching/dotNotation'; // this is a value, doesn't need to be evaluated
-import piConsoleFactory from '../piConsole';
+import piConsoleFactory from '../console/piConsole';
 
 export default MixerSequence;
 
