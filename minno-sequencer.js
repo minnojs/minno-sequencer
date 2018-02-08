@@ -399,6 +399,27 @@ function dotNotation$1(chain, obj){
     }, obj);
 }
 
+piConsoleFactory$1.$inject = ['$log'];
+function piConsoleFactory$1($log){
+    return window.DEBUG ? piConsole : _.noop;
+
+    function piConsole(log){
+        if (_.get(piConsole,'settings.hideConsole', false)) return window.postMessage({type:'kill-console'},'*');
+
+        $log[log.type] && $log[log.type](log.message); 
+        window.postMessage(noramlizeMessage(log),'*');
+    }
+
+    function noramlizeMessage(obj){
+        return _.cloneDeep(obj, normalize);
+        function normalize(val){
+            if (_.isFunction(val)) return val.toString();
+            if (_.isError(val)) return {name:val.name, message:val.message, stack:val.stack};
+        }
+    }
+}
+
+var piConsole$1 = piConsoleFactory$1(console);
 var mixer = mixProvider(
     _.shuffle, // randomizeShuffle
     Math.random // randomizeRandom
@@ -421,10 +442,6 @@ mixerBranchingDecorator$1(
 );
 
 var MixerSequence = mixerSequenceProvider$1(mixer);
-
-function piConsole$1(){
-    return console;
-}
 
 templateObjProvider$1.$inject = ['templateDefaultContext'];
 function templateObjProvider$1(templateDefaultContext){
@@ -1017,6 +1034,7 @@ function inflateProvider$1(query, $rootScope){
 
 var global = window.piGlobal;
 
+var piConsole = piConsoleFactory$1(console);
 var collection = collectionService();
 
 var DatabaseRandomizer = RandomizerProvider(

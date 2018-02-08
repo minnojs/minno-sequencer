@@ -12,8 +12,10 @@ import databaseProvider from './databaseProvider';
 import queryProvider from './queryProvider';
 import inflateProvider from './inflateProvider';
 
+import piConsoleFactory from './piConsole';
 export default Database;
 
+var piConsole = piConsoleFactory(console);
 var collection = collectionProvider();
 
 var DatabaseRandomizer = randomizerProvider(

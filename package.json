@@ -7,17 +7,18 @@
     "test": "test"
   },
   "dependencies": {
-    "angular": "^1.2.27",
-    "lodash": "^3.10.1"
+    "angular": "1.2.27",
+    "lodash": "3.10.1"
   },
   "devDependencies": {
-    "angular-mocks": "^1.2.27",
+    "angular-mocks": "1.2.27",
     "jasmine-core": "^2.8.0",
     "karma": "^1.7.1",
     "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.4",
     "karma-requirejs": "^1.1.0",
     "karma-rollup-preprocessor": "^5.0.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "requirejs": "^2.3.5",
     "rollup": "^0.50.0",
     "rollup-plugin-commonjs": "^8.2.1",
     "rollup-plugin-html": "^0.2.1",

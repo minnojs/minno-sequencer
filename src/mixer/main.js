@@ -7,9 +7,11 @@ import mixerEvaluateProvider from './branching/mixerEvaluateProvider';
 import mixerBranchingDecorator from './branching/mixerBranchingDecorator';
 import mixerSequenceProvider from './mixerSequenceProvider';
 import dotNotation from './branching/dotNotation'; // this is a value, doesn't need to be evaluated
+import piConsoleFactory from '../piConsole';
 
 export default MixerSequence;
 
+var piConsole = piConsoleFactory(console);
 var mixer = Mixer(
     _.shuffle, // randomizeShuffle
     Math.random // randomizeRandom
@@ -32,7 +34,3 @@ mixerBranchingDecorator(
 );
 
 var MixerSequence = mixerSequenceProvider(mixer);
-
-function piConsole(){
-    return console;
-}

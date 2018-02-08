@@ -1,24 +1,25 @@
 import _ from 'lodash';
-import '../databaseModule';
+import collectionProvider from './collectionProvider';
+var Collection = collectionProvider();
 
 describe('Collection',function(){
 
     var collection;
 
     beforeEach(module('database'));
-    beforeEach(inject(function(Collection){
+    beforeEach(function(){
         collection = new Collection();
-    }));
+    });
 
-    it('should init a collection from a collection', inject(function(Collection){
+    it('should init a collection from a collection', function(){
         var coll;
         collection.add([1,2,3]);
         coll = new Collection(collection);
-        expect(coll instanceof Collection).toBeTruthy();
+        expect(coll instanceof Collection).toBeTruthy(),
         expect(coll.collection).toEqual([1,2,3]);
-    }));
+    });
 
-    it('should init with an array or without one', inject(function(Collection){
+    it('should init with an array or without one', function(){
         var col, arr = [1,2,3,4];
 
         col = new Collection(arr);
@@ -26,13 +27,13 @@ describe('Collection',function(){
 
         col = new Collection();
         expect(col.collection.length).toBe(0);
-    }));
+    });
 
-    it('should throw an error if initiated with a non Array/collection', inject(function(Collection){
+    it('should throw an error if initiated with a non Array/collection', function(){
         expect(function(){
             new Collection({});
         }).toThrow();
-    }));
+    });
 
     it('should support "add"', function(){
         collection.add(1);
