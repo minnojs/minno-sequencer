@@ -2,8 +2,8 @@ import _ from 'lodash';
 
 export default mixerConditionProvider;
 
-mixerConditionProvider.$inject = ['mixerDotNotation'];
-function mixerConditionProvider(dotNotation){
+mixerConditionProvider.$inject = ['mixerDotNotation','piConsole'];
+function mixerConditionProvider(dotNotation,piConsole){
     var operatorHash = {
         gt: forceNumeric(_.gt),
         greaterThan: forceNumeric(_.gt),
@@ -21,7 +21,16 @@ function mixerConditionProvider(dotNotation){
         var left = dotNotation(condition.compare,context);
         var right = dotNotation(condition.to,context);
 
-        if (condition.DEBUG && console) console.info('Condition: ', left, condition.operator || 'equals', right, condition); // eslint-disable-line no-console 
+        if (condition.DEBUG) piConsole({
+            type:'info',
+            message:'Condition info',
+            rows: [
+                ['Left: ', left], 
+                ['Operator: ', condition.operator || 'equals'],
+                ['Right: ', right]
+            ],
+            context: condition,
+        });
 
         return condition.negate
             ? !operator.apply(context,[left, right, context])
