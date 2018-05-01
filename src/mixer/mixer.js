@@ -26,30 +26,21 @@ function mixProvider(shuffle, random){
 
         // if this isn't a mixer
         // make sure we catch mixers that are set with undefined by accident...
-        if (!(_.isPlainObject(obj) && 'mixer' in obj)){
-            return [obj];
-        }
+        if (!(_.isPlainObject(obj) && 'mixer' in obj)) return [obj];
 
-        if (_.isUndefined(mix.mixers[mixerName])){
-            throw new Error('Mixer: unknow mixer type = ' + mixerName);
-        }
+        if (_.isUndefined(mix.mixers[mixerName])) throw new Error('Mixer: unknow mixer type = ' + mixerName);
 
-        if (!obj.remix && obj.$parsed) {
-            return obj.$parsed;
-        }
+        if (!obj.remix && obj.$parsed) return obj.$parsed;
 
         obj.$parsed = mix.mixers[mixerName].apply(null, arguments);
 
-        if (!_.isArray(obj.$parsed)) {
-            throw new Error('Mixer: mixers must return an array (mixer: ' + mixerName + ')');
-        }
+        if (!_.isArray(obj.$parsed)) throw new Error('Mixer: mixers must return an array (mixer: ' + mixerName + ')');
 
         return obj.$parsed;
     }
 
     function deepMixer(sequence, context){
         return _.reduce(sequence, function(arr,value){
-
             if (_.isPlainObject(value) && 'mixer' in value && value.mixer != 'wrapper' && !value.wrapper){
                 var seq = deepMixer(mix(value, context), context);
                 return arr.concat(seq);
@@ -99,18 +90,14 @@ function mixProvider(shuffle, random){
 
     function weightedChoose(obj, context){
         var sequence = obj.data ? deepMixer(obj.data, context) : [];
-        var i;
         var n = obj.n || 1;
-        var result = [];
-        var total_weight = _.reduce(obj.weights,function (prev, cur) {
-            return prev + cur;
-        });
+        var total_weight = _.sum(obj.weights);
 
-        for (i = 0; i < n; i++){
-            result.push(generate());
-        }
+        if (!_.isArray(obj.weights)) throw new Error('Mixer: weightedRandom requires an array of weights');
 
-        return result;
+        return _.range(0,n)
+            .map(generate)
+            .map(_.clone);
 
         function generate(){
             var i;
@@ -121,9 +108,7 @@ function mixProvider(shuffle, random){
                 weight_sum += obj.weights[i];
                 weight_sum = +weight_sum.toFixed(3);
 
-                if (random_num <= weight_sum) {
-                    return obj.data[i];
-                }
+                if (random_num <= weight_sum) return obj.data[i];
             }
 
             throw new Error('Mixer: something went wrong with weightedRandom');
