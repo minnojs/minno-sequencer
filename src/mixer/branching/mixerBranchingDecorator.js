@@ -7,8 +7,8 @@ import _ from 'lodash';
 
 export default mixerBranchingDecorator;
 
-mixerBranchingDecorator.$inject = ['$delegate','mixerEvaluate','mixerDefaultContext'];
-function mixerBranchingDecorator(mix, evaluate, mixerDefaultContext){
+mixerBranchingDecorator.$inject = ['$delegate','mixerEvaluate','mixerDefaultContext','piConsole'];
+function mixerBranchingDecorator(mix, evaluate, mixerDefaultContext, piConsole){
 
     mix.mixers.branch = branch;
     mix.mixers.multiBranch = multiBranch;
@@ -21,6 +21,14 @@ function mixerBranchingDecorator(mix, evaluate, mixerDefaultContext){
      */
     function branch(obj, context){
         context = _.extend(context || {}, mixerDefaultContext);
+        if (_.isUndefined(obj.conditions)) {
+            piConsole({
+                type:'error',
+                message: 'Missing conditions in branch mixer.',
+                context: obj
+            });
+            throw new Error('Missing conditions in branch mixer.');
+        }
         return evaluate(obj.conditions, context) ? obj.data || [] : obj.elseData || [];
     }
 
@@ -33,6 +41,14 @@ function mixerBranchingDecorator(mix, evaluate, mixerDefaultContext){
         var row;
 
         row = _.find(obj.branches, function(branch){
+            if (_.isUndefined(branch.conditions)) {
+                piConsole({
+                    type:'error',
+                    message: 'Missing conditions in multi branch mixer.',
+                    context: branch
+                });
+                throw new Error('Missing conditions in multi branch mixer.');
+            }
             return evaluate(branch.conditions, context);
         });
 
