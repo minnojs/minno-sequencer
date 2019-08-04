@@ -14,7 +14,7 @@ function piConsoleFactory($log){
     }
 
     function noramlizeMessage(obj){
-        return _.cloneDeep(obj, normalize);
+        return _.cloneDeepWith(obj, normalize);
         function normalize(val){
             if (_.isFunction(val)) return val.toString();
             if (_.isError(val)) return {name:val.name, message:val.message, stack:val.stack};

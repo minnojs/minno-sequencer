@@ -12,7 +12,6 @@ import databaseProvider from './databaseProvider';
 import storeProvider from './store/storeProvider';
 import databaseSequenceProvider from './databaseSequenceProvider';
 
-
 var module = angular.module('database',[
     mixerModule.name,
     templateModule.name,

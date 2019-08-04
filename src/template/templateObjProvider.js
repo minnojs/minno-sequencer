@@ -8,7 +8,7 @@ function templateObjProvider(templateDefaultContext){
         var skip = _.get(options, 'skip', []);
         var ctx = _.assign({}, context, templateDefaultContext);
 
-        return _.cloneDeep(obj, customizer);
+        return _.cloneDeepWith(obj, customizer);
 
         function customizer(value, key, object){
             if (obj === object && _.includes(skip, key)) return value;

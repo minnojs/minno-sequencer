@@ -1,4 +1,4 @@
 import templateObjProvider from './templateObjProvider';
-
-export default templateObjProvider({}); 
+export var templateDefaultContext = {};
+export default templateObjProvider(templateDefaultContext); 
 
