@@ -16,7 +16,7 @@ function queryProvider(Collection){
 
         // filter by set
         // ****************************
-        if (query.set) coll = coll.where({set:query.set});
+        if (query.set) coll = coll.filter({set:query.set});
 
         // filter by data
         // ****************************
@@ -26,7 +26,7 @@ function queryProvider(Collection){
             });
         }
 
-        if (_.isPlainObject(query.data)) coll = coll.where({data:query.data});
+        if (_.isPlainObject(query.data)) coll = coll.filter({data:query.data});
 
         if (_.isFunction(query.data)) coll = coll.filter(query.data);
 

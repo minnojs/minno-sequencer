@@ -86,7 +86,7 @@ function collectionService(){
         Collection.prototype[method] = function() {
             var args = slice.call(arguments);
             args.unshift(this.collection);
-            var coll = _[method].apply(_,args);
+            var coll = _.filter.apply(_,args);
             return new Collection(coll);
         };
     });
