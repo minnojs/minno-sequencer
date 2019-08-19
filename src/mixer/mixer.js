@@ -60,7 +60,7 @@ function mixProvider(shuffle, random){
             var sequence = obj.data || [];
             var result = [], i;
             for (i=0; i < obj.times; i++){
-                result = result.concat(_.cloneDeep(sequence));
+                result = result.concat(_.clone(sequence,true));
             }
             return result;
         },

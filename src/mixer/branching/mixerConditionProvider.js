@@ -9,9 +9,9 @@ function mixerConditionProvider(dotNotation,piConsole){
         greaterThan: forceNumeric(_.gt),
         gte: forceNumeric(_.gte),
         greaterThanOrEqual: forceNumeric(_.gte),
-        equals: _.isEqual,
-        'in': _.rearg(_.includes,1,0), // effectively reverse
-        contains: _.rearg(_.includes,1,0), // effectively reverse
+        equals: _.eq,
+        'in': _.rearg(_.contains,1,0), // effectively reverse
+        contains: _.rearg(_.contains,1,0), // effectively reverse
         exactly: exactly,
         isTruthy: isTruthy
     };
@@ -44,7 +44,7 @@ function mixerConditionProvider(dotNotation,piConsole){
     function getOperator(condition){
         var operator = condition.operator;
         if (_.isFunction(condition)) return condition;
-        if (!_.has(condition, 'operator')) return _.has(condition,'to') ? _.isEqual : isTruthy;
+        if (!_.has(condition, 'operator')) return _.has(condition,'to') ? _.eq : isTruthy;
         if (_.isFunction(operator)) return operator;
         return operatorHash[operator];
     }

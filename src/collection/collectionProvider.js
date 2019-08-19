@@ -82,12 +82,11 @@ function collectionService(){
     var slice = Array.prototype.slice;
 
     // Mix in each Underscore method as a proxy to `Collection#models`.
-    // This whole function is a bit superflues. lodash deprecated 'where' in favor of filter shorthand so we got to this...
     _.each(methods, function(method) {
         Collection.prototype[method] = function() {
             var args = slice.call(arguments);
             args.unshift(this.collection);
-            var coll = _.filter.apply(_,args);
+            var coll = _[method].apply(_,args);
             return new Collection(coll);
         };
     });

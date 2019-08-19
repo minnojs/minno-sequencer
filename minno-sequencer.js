@@ -31,21 +31,30 @@ function mixProvider(shuffle, random){
 
         // if this isn't a mixer
         // make sure we catch mixers that are set with undefined by accident...
-        if (!(_.isPlainObject(obj) && 'mixer' in obj)) return [obj];
+        if (!(_.isPlainObject(obj) && 'mixer' in obj)){
+            return [obj];
+        }
 
-        if (_.isUndefined(mix.mixers[mixerName])) throw new Error('Mixer: unknow mixer type = ' + mixerName);
+        if (_.isUndefined(mix.mixers[mixerName])){
+            throw new Error('Mixer: unknow mixer type = ' + mixerName);
+        }
 
-        if (!obj.remix && obj.$parsed) return obj.$parsed;
+        if (!obj.remix && obj.$parsed) {
+            return obj.$parsed;
+        }
 
         obj.$parsed = mix.mixers[mixerName].apply(null, arguments);
 
-        if (!_.isArray(obj.$parsed)) throw new Error('Mixer: mixers must return an array (mixer: ' + mixerName + ')');
+        if (!_.isArray(obj.$parsed)) {
+            throw new Error('Mixer: mixers must return an array (mixer: ' + mixerName + ')');
+        }
 
         return obj.$parsed;
     }
 
     function deepMixer(sequence, context){
         return _.reduce(sequence, function(arr,value){
+
             if (_.isPlainObject(value) && 'mixer' in value && value.mixer != 'wrapper' && !value.wrapper){
                 var seq = deepMixer(mix(value, context), context);
                 return arr.concat(seq);
@@ -65,7 +74,7 @@ function mixProvider(shuffle, random){
             var sequence = obj.data || [];
             var result = [], i;
             for (i=0; i < obj.times; i++){
-                result = result.concat(_.cloneDeep(sequence));
+                result = result.concat(_.clone(sequence,true));
             }
             return result;
         },
@@ -95,14 +104,18 @@ function mixProvider(shuffle, random){
 
     function weightedChoose(obj, context){
         var sequence = obj.data ? deepMixer(obj.data, context) : [];
+        var i;
         var n = obj.n || 1;
-        var total_weight = _.sum(obj.weights);
+        var result = [];
+        var total_weight = _.reduce(obj.weights,function (prev, cur) {
+            return prev + cur;
+        });
 
-        if (!_.isArray(obj.weights)) throw new Error('Mixer: weightedRandom requires an array of weights');
+        for (i = 0; i < n; i++){
+            result.push(generate());
+        }
 
-        return _.range(0,n)
-            .map(generate)
-            .map(_.clone);
+        return result;
 
         function generate(){
             var i;
@@ -113,7 +126,9 @@ function mixProvider(shuffle, random){
                 weight_sum += obj.weights[i];
                 weight_sum = +weight_sum.toFixed(3);
 
-                if (random_num <= weight_sum) return obj.data[i];
+                if (random_num <= weight_sum) {
+                    return obj.data[i];
+                }
             }
 
             throw new Error('Mixer: something went wrong with weightedRandom');
@@ -147,9 +162,9 @@ function mixerConditionProvider$1(dotNotation,piConsole){
         greaterThan: forceNumeric(_.gt),
         gte: forceNumeric(_.gte),
         greaterThanOrEqual: forceNumeric(_.gte),
-        equals: _.isEqual,
-        'in': _.rearg(_.includes,1,0), // effectively reverse
-        contains: _.rearg(_.includes,1,0), // effectively reverse
+        equals: _.eq,
+        'in': _.rearg(_.contains,1,0), // effectively reverse
+        contains: _.rearg(_.contains,1,0), // effectively reverse
         exactly: exactly,
         isTruthy: isTruthy
     };
@@ -182,7 +197,7 @@ function mixerConditionProvider$1(dotNotation,piConsole){
     function getOperator(condition){
         var operator = condition.operator;
         if (_.isFunction(condition)) return condition;
-        if (!_.has(condition, 'operator')) return _.has(condition,'to') ? _.isEqual : isTruthy;
+        if (!_.has(condition, 'operator')) return _.has(condition,'to') ? _.eq : isTruthy;
         if (_.isFunction(operator)) return operator;
         return operatorHash[operator];
     }
@@ -235,8 +250,8 @@ function evaluateProvider(condition){
  * @return {function}         [mixer decorator]
  */
 
-mixerBranchingDecorator$1.$inject = ['$delegate','mixerEvaluate','mixerDefaultContext','piConsole'];
-function mixerBranchingDecorator$1(mix, evaluate, mixerDefaultContext, piConsole){
+mixerBranchingDecorator$1.$inject = ['$delegate','mixerEvaluate','mixerDefaultContext'];
+function mixerBranchingDecorator$1(mix, evaluate, mixerDefaultContext){
 
     mix.mixers.branch = branch;
     mix.mixers.multiBranch = multiBranch;
@@ -249,14 +264,6 @@ function mixerBranchingDecorator$1(mix, evaluate, mixerDefaultContext, piConsole
      */
     function branch(obj, context){
         context = _.extend(context || {}, mixerDefaultContext);
-        if (_.isUndefined(obj.conditions)) {
-            piConsole({
-                type:'error',
-                message: 'Missing conditions in branch mixer.',
-                context: obj
-            });
-            throw new Error('Missing conditions in branch mixer.');
-        }
         return evaluate(obj.conditions, context) ? obj.data || [] : obj.elseData || [];
     }
 
@@ -269,14 +276,6 @@ function mixerBranchingDecorator$1(mix, evaluate, mixerDefaultContext, piConsole
         var row;
 
         row = _.find(obj.branches, function(branch){
-            if (_.isUndefined(branch.conditions)) {
-                piConsole({
-                    type:'error',
-                    message: 'Missing conditions in multi branch mixer.',
-                    context: branch
-                });
-                throw new Error('Missing conditions in multi branch mixer.');
-            }
             return evaluate(branch.conditions, context);
         });
 
@@ -421,7 +420,7 @@ function piConsoleFactory$1($log){
     }
 
     function noramlizeMessage(obj){
-        return _.cloneDeepWith(obj, normalize);
+        return _.cloneDeep(obj, normalize);
         function normalize(val){
             if (_.isFunction(val)) return val.toString();
             if (_.isError(val)) return {name:val.name, message:val.message, stack:val.stack};
@@ -458,13 +457,27 @@ function templateObjProvider$1(templateDefaultContext){
 
     function templateObj(obj, context, options){
         var skip = _.get(options, 'skip', []);
+        var result = {};
+        var key;
         var ctx = _.assign({}, context, templateDefaultContext);
 
-        return _.cloneDeepWith(obj, customizer);
+        for (key in obj){
+            result[key] = (skip.indexOf(key) == -1) ? expand(obj[key]) : obj[key];
+        }
 
-        function customizer(value, key, object){
-            if (obj === object && _.includes(skip, key)) return value;
-            if (_.isString(value) && _.includes(value, '<%')) return _.template(value)(ctx);
+        return result;
+
+        function expand(value){
+            if (_.isString(value)) return template(value);
+            if (_.isArray(value)) return value.map(expand);
+            if (_.isPlainObject(value)) return _.mapValues(value, expand);
+            return value;
+        }
+
+        function template(input){
+            // if there is no template just return the string
+            if (!~input.indexOf('<%')) return input;
+            return _.template(input)(ctx);
         }
     }
 
@@ -555,12 +568,11 @@ function collectionService(){
     var slice = Array.prototype.slice;
 
     // Mix in each Underscore method as a proxy to `Collection#models`.
-    // This whole function is a bit superflues. lodash deprecated 'where' in favor of filter shorthand so we got to this...
     _.each(methods, function(method) {
         Collection.prototype[method] = function() {
             var args = slice.call(arguments);
             args.unshift(this.collection);
-            var coll = _.filter.apply(_,args);
+            var coll = _[method].apply(_,args);
             return new Collection(coll);
         };
     });
@@ -1092,8 +1104,6 @@ function randomArr(length){
 function randomInt(length){
     return Math.floor(Math.random()*length);
 }
-
-Database.mixerDefaultContext = mixerDefaultContext;
 
 return Database;
 

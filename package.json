@@ -12,13 +12,14 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "angular": "1.2.27",
     "angular-mocks": "1.2.27",
     "jasmine-core": "^2.8.0",
-    "karma": "^4.1.0",
-    "karma-chrome-launcher": "^2.2.0",
+    "karma": "^1.7.1",
     "karma-jasmine": "^1.1.0",
     "karma-requirejs": "^1.1.0",
     "karma-rollup-preprocessor": "^5.0.1",
+    "karma-chrome-launcher": "^2.2.0",
     "requirejs": "^2.3.5",
     "rollup": "^0.50.0",
     "rollup-plugin-commonjs": "^8.2.1",

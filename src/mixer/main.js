@@ -25,7 +25,7 @@ var mixerCondition = mixerConditionProvider(
 
 var mixerEvaluate = mixerEvaluateProvider(mixerCondition);
 
-export var mixerDefaultContext = {};
+var mixerDefaultContext = {};
 
 mixerBranchingDecorator(
     mixer,
