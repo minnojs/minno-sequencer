@@ -8,6 +8,7 @@ import mixerBranchingDecorator from './branching/mixerBranchingDecorator';
 import mixerSequenceProvider from './mixerSequenceProvider';
 import dotNotation from './branching/dotNotation'; // this is a value, doesn't need to be evaluated
 import piConsoleFactory from '../console/piConsole';
+import MixerRecursive from './mixerRecursive';
 
 export default MixerSequence;
 
@@ -26,7 +27,7 @@ var mixerCondition = mixerConditionProvider(
 var mixerEvaluate = mixerEvaluateProvider(mixerCondition);
 
 export var mixerDefaultContext = {};
-
+export var mixerRecursive = MixerRecursive(mixer);
 mixerBranchingDecorator(
     mixer,
     mixerEvaluate,
