@@ -9,6 +9,12 @@ function mixerConditionProvider(dotNotation,piConsole){
         greaterThan: forceNumeric(_.gt),
         gte: forceNumeric(_.gte),
         greaterThanOrEqual: forceNumeric(_.gte),
+
+        lt: forceNumeric(_.lt),
+        lesserThan: forceNumeric(_.lt),
+        lte: forceNumeric(_.lte),
+        lesserThanOrEqual: forceNumeric(_.lte),
+
         equals: _.isEqual,
         'in': _.rearg(_.includes,1,0), // effectively reverse
         contains: _.rearg(_.includes,1,0), // effectively reverse
