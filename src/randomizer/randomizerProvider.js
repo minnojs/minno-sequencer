@@ -98,5 +98,4 @@ function RandomizerProvider(randomizeInt, randomizeRange, Collection){
             return result;
         }
     }
-
 }

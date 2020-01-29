@@ -96,6 +96,15 @@ describe('database query',function(){
             expect(randomizer.exRandom).toHaveBeenCalled();
         });
 
+        it('should support equalDistribution', function(){
+            var n = coll.length*2;
+            q({type:'equalDistribution', n:n});
+            expect(randomizer.exRandom).toHaveBeenCalledWith(n, jasmine.any(String), undefined);
+
+            q({type:'at', n:n, at:7});
+            expect(result).toBe(coll[2]);
+        });
+
         it('should support sequential access', function(){
             q({type:'sequential'});
             expect(randomizer.sequential).toHaveBeenCalled();
@@ -107,6 +116,10 @@ describe('database query',function(){
             q({type:'last'});
             expect(result).toBe(coll[3]);
         });
+
+        it('should support at', function(){
+            q({type:'at', at: 2});
+            expect(result).toBe(coll[1]);
+        });
     });
 });
-

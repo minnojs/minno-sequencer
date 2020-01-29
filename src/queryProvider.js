@@ -5,7 +5,7 @@ queryProvider.$inject = ['Collection'];
 function queryProvider(Collection){
 
     function queryFn(query, collection, randomizer){
-        var coll = new Collection(collection);
+        var coll = collection instanceof Collection ? collection.collection : collection; // get array
 
         // shortcuts:
         // ****************************
@@ -16,7 +16,7 @@ function queryProvider(Collection){
 
         // filter by set
         // ****************************
-        if (query.set) coll = coll.filter({set:query.set});
+        if (query.set) coll = _.filter(coll,{set:query.set});
 
         // filter by data
         // ****************************
@@ -26,9 +26,11 @@ function queryProvider(Collection){
             });
         }
 
-        if (_.isPlainObject(query.data)) coll = coll.filter({data:query.data});
+        if (_.isPlainObject(query.data)) coll = _.filter(coll, {data:query.data});
 
-        if (_.isFunction(query.data)) coll = coll.filter(query.data);
+        if (_.isFunction(query.data)) coll = _.filter(coll, query.data);
+
+        if (query.n) coll = repeatArr(query.n, coll);
 
         // pick by type
         // ****************************
@@ -45,11 +47,15 @@ function queryProvider(Collection){
             case 'random':
                 at = randomizer.random(length,seed,repeat);
                 break;
+            case 'equalDistribution':
             case 'exRandom':
                 at = randomizer.exRandom(length,seed,repeat);
                 break;
             case 'sequential':
                 at = randomizer.sequential(length,seed,repeat);
+                break;
+            case 'at':
+                at = _.isUndefined(query.at) ? 0 : query.at - 1;
                 break;
             case 'first':
                 at = 0;
@@ -61,10 +67,17 @@ function queryProvider(Collection){
                 throw new Error('Unknow query type: ' + query.type);
         }
 
-        if (_.isUndefined(coll.at(at))) throw new Error('Query failed, object (' + JSON.stringify(query) +	') not found. If you are trying to apply a template, you should know that they are not supported for inheritance.');
+        if (_.isUndefined(coll[at])) throw new Error('Query failed, object (' + JSON.stringify(query) +	') not found. If you are trying to apply a template, you should know that they are not supported for inheritance.');
 
-        return coll.at(at);
+        return coll[at];
     }
 
     return queryFn;
+
+    function repeatArr(n, arr){
+        var res = [];
+        while (res.length <= n) res = res.concat(arr);
+        res.length = n;
+        return res;
+    }
 }
