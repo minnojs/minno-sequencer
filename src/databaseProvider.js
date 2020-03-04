@@ -32,6 +32,12 @@ function DatabaseProvider(Store, Randomizer, inflate, templateObj, DatabaseSeque
                 if (!query.$inflated || query.reinflate) {
                     query.$inflated = inflate(query, coll, this.randomizer);
                     query.$templated = null; // we have to retemplate after querying, who know what new templates we got here...
+
+                    // this is somewhat of a hack just so we don't have to change the signature of inflate()
+                    _.get(options, 'skip', []).forEach(function(key){
+                        query.$inflated[key] = query[key];
+                    });
+
                 }
             } catch(err) {
                 piConsole({

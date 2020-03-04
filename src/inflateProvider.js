@@ -99,7 +99,6 @@ function inflateProvider(query, $rootScope){
                     }
                     child[key] = _.extend({},parentProp,childProp);
                 }
-
             }
         });
 
