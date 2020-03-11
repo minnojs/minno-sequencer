@@ -1,6 +1,6 @@
 {
   "name": "minno-sequencer",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A sequence manager for minnojs",
   "main": "minno-sequencer.js",
   "module": "src/index.js",
