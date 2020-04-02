@@ -20,11 +20,9 @@ function queryProvider(Collection){
 
         // filter by data
         // ****************************
-        if (_.isString(query.data)){
-            coll = coll.filter(function(q){
-                return q.handle === query.data || (q.data && q.data.handle === query.data);
-            });
-        }
+        if (_.isString(query.data)) coll = coll.filter(function(q){
+            return q.handle === query.data || (q.data && q.data.handle === query.data);
+        });
 
         if (_.isPlainObject(query.data)) coll = _.filter(coll, {data:query.data});
 
@@ -48,6 +46,8 @@ function queryProvider(Collection){
                 at = randomizer.random(length,seed,repeat);
                 break;
             case 'equalDistribution':
+                if (!query.seed) throw new Error('"equalDistribution" requires you to set an explicit "seed" (' + JSON.stringify(query) +	')');
+                // falls through
             case 'exRandom':
                 at = randomizer.exRandom(length,seed,repeat);
                 break;

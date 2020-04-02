@@ -98,7 +98,11 @@ describe('database query',function(){
 
         it('should support equalDistribution', function(){
             var n = coll.length*2;
-            q({type:'equalDistribution', n:n});
+
+            expect(function(){
+                q({type:'equalDistribution', n:n});
+            }).toThrow();
+            q({type:'equalDistribution', n:n, seed:'seed'});
             expect(randomizer.exRandom).toHaveBeenCalledWith(n, jasmine.any(String), undefined);
 
             q({type:'at', n:n, at:7});
