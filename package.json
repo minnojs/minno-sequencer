@@ -8,11 +8,11 @@
     "test": "test"
   },
   "dependencies": {
-    "angular": "1.2.27",
+    "angular": "1.8.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "angular": "1.2.27",
+    "angular": "1.8.0",
     "angular-mocks": "1.2.27",
     "jasmine-core": "^2.8.0",
     "karma": "^4.2.0",
