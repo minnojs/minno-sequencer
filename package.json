@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "angular": "1.2.27",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "angular": "1.2.27",
